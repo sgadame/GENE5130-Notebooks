@@ -13,6 +13,11 @@ output:
 After the lecture in class we will be running some simple linear models.
 
 ```{r}
+install.packages("car")
+```
+
+
+```{r}
 #### First install the car package, this has a bunch of classic datasets used when learning ML.
 #install.packages("car")
 library(car)
@@ -35,6 +40,7 @@ ggplot(Prestige, aes(x= education, y = prestige)) + geom_point()
 
 # prestige = b + m * education.
 
+### prestige is like my Y, "my Y as a function of education"
 ```{r}
 reg1<-lm(prestige ~ education, data = Prestige)
 summary(reg1)
@@ -67,7 +73,7 @@ Prestige$type <- with(Prestige, factor(type, levels = c("bc","wc","prof")))
 
 ```{r setup}
     ### Edit this line so your notebook renders properly
-    knitr::opts_knit$set(root.dir = normalizePath("~/Documents/GENE5130")) 
+    knitr::opts_knit$set(root.dir = normalizePath("~/Documents/Github/GENE5130-Notebooks/Data")) 
 ```
 
 ```{r}
@@ -78,6 +84,11 @@ Simple excercise, which snps are significantly associated with Cholesterol level
 
 ```{r}
 ### Plot the data, 
+
+#ggplot(data, aes(x= rs6669795, y= CHOL)) + geom_point()
+
+model<-lm(CHOL ~ rs12140539, data =data)
+summary(model)
 
 ```
 
