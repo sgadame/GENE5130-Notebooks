@@ -1,0 +1,68 @@
+---
+title: "Session 2.1 Visualization"
+author: "Sergio Adame, MB (ASCP)"
+date: "Week 02: March 31, 2025"
+output: 
+  html_document: 
+    highlight: espresso
+    theme: cerulean---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+---
+
+First, we need to load the required libraries and import your counts data file:
+```{r}
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+library(pheatmap)
+
+# Import the counts table
+# Assuming you have downloaded the file as "counts.txt"
+counts_data <- read.table("counts.txt", header = TRUE, sep = "\t")
+
+# Check the structure of the data
+head(counts_data)
+```
+
+Question 1: Find the gene with the most counts across all samples
+```{r}
+# Use mutate to sum all counts per row
+counts_summary <- counts_data %>%
+  mutate(total_counts = rowSums(counts_data[, 7:ncol(counts_data)])) %>%
+  arrange(desc(total_counts))
+
+# Display the gene with the most counts
+most_counts <- counts_summary[1, ]
+print("Gene with the highest total counts:")
+print(most_counts$Geneid)
+print(paste("Total counts:", top_gene$total_counts))
+```
+
+Question 2: Find the length of the longest and shortest genes
+```{r}
+# Find the longest gene
+longest_gene <- counts_data[which.max(counts_data$Length), ]
+print("Longest gene:")
+print(longest_gene$Geneid)
+print(paste("Length:", longest_gene$Length, "bp"))
+
+# Find the shortest gene
+shortest_gene <- counts_data[which.min(counts_data$Length), ]
+print("Shortest gene:")
+print(shortest_gene$Geneid)
+print(paste("Length:", shortest_gene$Length, "bp"))
+```
+
+Question 3: Plot a histogram of counts across all samples
+```{r}
+# Create a histogram of total counts
+counts_histogram <- counts_summary %>% filter(total_counts > 0)
+ggplot(counts_nonzero, aes(x = total_counts)) +
+  geom_histogram(bins = 50, fill = "blue") +
+  scale_x_log10() +
+  labs(title = "Distribution of Non-Zero Gene Counts",
+       x = "Total Counts (log scale)",
+       y = "Number of Genes") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
